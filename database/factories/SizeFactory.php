@@ -18,7 +18,7 @@ class SizeFactory extends Factory
     {
         return [
             'url' => fake()->imageUrl(),
-            'storage_path' => fake()->imageUrl()
+            'storage_path' => fake()->imageUrl(),
         ];
     }
 
@@ -38,7 +38,7 @@ class SizeFactory extends Factory
         ]);
     }
 
-        /**
+    /**
      * Indicate that the model's email address should be unverified.
      *
      * @return static
@@ -50,7 +50,7 @@ class SizeFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'size' => 'lg',
             'storage_path' => $path,
-            'url' => $path
+            'url' => $path,
         ]);
     }
 }

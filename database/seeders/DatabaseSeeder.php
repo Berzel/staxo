@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         Artisan::call('migrate:fresh');
 
         User::factory()->count(mt_rand(15, 30))
-            ->has(Product::factory()->count(mt_rand(0,5))
+            ->has(Product::factory()->count(mt_rand(0, 5))
                 ->has(Image::factory()
                     ->has(Size::factory()->small())
                     ->has(Size::factory()->large())

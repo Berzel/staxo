@@ -22,7 +22,7 @@ class ProductFactory extends Factory
         return [
             'name' => $name,
             'slug' => Str::slug($name),
-            'price' => fake()->numberBetween(30, 10000)
+            'price' => fake()->numberBetween(30, 10000),
         ];
     }
 }

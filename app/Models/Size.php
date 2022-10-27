@@ -17,7 +17,7 @@ class Size extends Model
     protected $fillable = [
         'size',
         'storage_path',
-        'url'
+        'url',
     ];
 
     /**
