@@ -1,7 +1,10 @@
 import TopNav from "@/Components/TopNav";
+import moneyFormat from "@/Utils/moneyFormat";
+import productImage from "@/Utils/productImage";
 import { Head, Link } from "@inertiajs/inertia-react";
 
 export default function Product({product}) {
+    
     return (
         <>
             <Head title={product.name}>
@@ -23,7 +26,7 @@ export default function Product({product}) {
                     <div className="h-[32rem] w-[50%] bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
                         <img
                             className="object-cover object-center w-full h-full"
-                            src={product.images[0].sizes.filter(s => s.size === 'lg')[0].url}
+                            src={productImage(product, 'lg')}
                             alt={product.name} />
                     </div>
                     <div className="w-[50%] ml-8 flex-shrink">
@@ -31,7 +34,7 @@ export default function Product({product}) {
                             {product.name}
                         </h1>
                         <p className="mt-4 text-4xl font-semibold text-sky-500">
-                            {product.price}
+                            {moneyFormat(product.price)}
                         </p>
                         <div className="py-4 mt-4 text-sm text-gray-500 border-y">
                             Summary

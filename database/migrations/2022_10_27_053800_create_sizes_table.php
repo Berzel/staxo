@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('sizes', function (Blueprint $table) {
             $table->id();
-            $table->enum('size', ['sm', 'lg']);
+            $table->enum('size', ['sm', 'lg', 'default']);
             $table->string('storage_path');
             $table->string('url');
             $table->timestamps();

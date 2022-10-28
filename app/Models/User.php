@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Product::class);
     }
+
+    public function owns(Product $product)
+    {
+        return $this->id === $product->user->id;
+    }
 }

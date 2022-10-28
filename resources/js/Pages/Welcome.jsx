@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, Head } from '@inertiajs/inertia-react';
 import TopNav from '@/Components/TopNav';
+import productImage from '@/Utils/productImage';
+import moneyFormat from '@/Utils/moneyFormat';
 
 export default function Welcome({products}) {
     
@@ -33,15 +35,15 @@ export default function Welcome({products}) {
                                                 <img 
                                                     loading="lazy"
                                                     className="object-cover object-center w-full h-full"
-                                                    src={product.images[0].sizes.filter(s => s.size === 'sm')[0].url}
+                                                    src={productImage(product, 'sm')}
                                                     alt={product.name} />
                                             </div>
-                                            <div>
+                                            <div className='mt-2'>
                                                 <h2>
                                                     {product.name}
                                                 </h2>
-                                                <h2 className="font-semibold">
-                                                    {product.price}
+                                                <h2 className="font-semibold text-sky-500">
+                                                    {moneyFormat(product.price)}
                                                 </h2>
                                             </div>
                                     </Link>

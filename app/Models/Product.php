@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
-use GuzzleHttp\Psr7\UploadedFile;
+use App\Jobs\OptimizeProductImage;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -37,8 +41,73 @@ class Product extends Model
         return $this->hasMany(Image::class);
     }
 
-    public function addImage(UploadedFile $image)
+    public function name() : Attribute
     {
-        // $image = $this->images()->create();
+        return Attribute::make(
+            set: fn ($value) => [
+                'name' => $value,
+                'slug' => $this->slug ?? Str::slug($value) . '-' . now()->timestamp
+            ]
+        );
+    }
+
+    public function addImage(UploadedFile $uploadedImage)
+    {
+        $image = $this->images()->create();
+
+        $path = $uploadedImage->storePubliclyAs(
+            $this->imageDirectory(),
+            'default'.'.'.strtolower($uploadedImage->extension()),
+            'public'
+        );
+
+        $image->sizes()->create([
+            'size' => 'default',
+            'storage_path' => $path,
+            'url' => Storage::url($path),
+        ]);
+
+        OptimizeProductImage::dispatch($image);
+
+        return $image;
+    }
+
+    public function updateImage(UploadedFile $uploadedImage)
+    {
+        $image = $this->images()->first();
+
+        $path = $uploadedImage->storePubliclyAs(
+            $this->imageDirectory(),
+            'default'.'.'.strtolower($uploadedImage->extension()),
+            'public'
+        );
+
+        $image->default->update([
+            'storage_path' => $path,
+            'url' => Storage::url($path),
+        ]);
+
+        OptimizeProductImage::dispatch($image);
+
+        return $image;
+    }
+
+
+    public function deleteImage()
+    {
+        $this->images->each(function ($image) {
+            
+            $image->sizes->each(function ($size) {
+                Storage::disk('public')->delete($size->storage_path);
+                $size->delete();
+            });
+
+            $image->delete();
+        });
+    }
+
+    protected function imageDirectory()
+    {
+        return $this->created_at->format('Y/m/d') . '/' . $this->id;
     }
 }

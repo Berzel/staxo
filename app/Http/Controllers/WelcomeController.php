@@ -17,7 +17,7 @@ class WelcomeController extends Controller
             'images' => [
                 'sizes',
             ],
-        ])->paginate(16);
+        ])->latest()->paginate(16);
 
         return Inertia::render('Welcome', [
             'products' => $products,
