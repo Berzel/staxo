@@ -15,7 +15,7 @@ class ProductController extends Controller
 {
     /**
      * Create a new controller instance
-     * 
+     *
      * @return void
      */
     public function __construct()
@@ -64,7 +64,7 @@ class ProductController extends Controller
 
             $product = $request->user()->products()
                 ->create($request->validated());
-                
+
             $product->addImage($request->file('image'));
 
             session()->flash('success', 'Product saved successfully!');
@@ -146,18 +146,5 @@ class ProductController extends Controller
 
             return back();
         });
-    }
-
-    public function checkout(Request $request, Product $product)
-    {
-        $user = User::firstOrCreate([
-            'email' => $request->email
-        ], [
-            'email' => $request->email,
-            'name' => $request->email,
-            'password' => Str::random(32)
-        ]);
-
-        return $user->checkoutCharge($product->price, $product->name, 1);
     }
 }

@@ -54,8 +54,22 @@ class User extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
+    /**
+     * Check if a user owns a product
+     *
+     * @param \App\Models\Product
+     * @return bool
+     */
     public function owns(Product $product)
     {
         return $this->id === $product->user->id;
+    }
+
+    /**
+     * Get the orders that belong to this user
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

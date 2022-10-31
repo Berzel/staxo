@@ -5,7 +5,7 @@ import productImage from "@/Utils/productImage";
 import { Head, Link } from "@inertiajs/inertia-react";
 
 export default function Product({product}) {
-    
+
     return (
         <>
             <Head title={product.name}>
@@ -53,9 +53,9 @@ export default function Product({product}) {
                         </p>
                         </div>
                         <div className="mt-8">
-                            <a href={route('products.checkout', {product: product.slug, email: 'berzel.best@gmail.com'})} className="block py-4 font-semibold text-center text-white rounded bg-sky-500">
+                            <Link href={route('orders.create', {product: product.slug})} className="block py-4 font-semibold text-center text-white rounded bg-sky-500">
                                 Buy now - {moneyFormat(product.price)}
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

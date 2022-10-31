@@ -101,9 +101,9 @@ export default function Create() {
                             { errors.price && <div className="mt-1 text-sm text-red-500">{errors.price}</div> }
 
                             <div className="mt-8">
-                            <button className="block w-full px-4 py-4 font-semibold text-center text-white rounded-lg bg-sky-500">
-                                Add Product
-                            </button>
+                                <button className="block w-full px-4 py-4 font-semibold text-center text-white rounded-lg bg-sky-500">
+                                    Add Product
+                                </button>
                             </div>
                         </form>
                     </div>
