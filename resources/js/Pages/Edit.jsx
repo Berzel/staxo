@@ -46,17 +46,17 @@ export default function Edit({product}) {
                             Left Navigation Menu
                         </div>
                     </div>
-                    <div className="flex-grow">
+                    <div className="flex-grow md:max-w-[40rem]">
                         <form onSubmit={updateProduct} encType="multipart/form-data">
                             <label htmlFor="image" className="block cursor-pointer">
-                                <input 
-                                    type="file" 
-                                    id="image" 
+                                <input
+                                    type="file"
+                                    id="image"
                                     className="hidden"
                                     name="image"
                                     onChange={onImageChange}
                                     accept=".jpeg,.png,.jpg,.webp" />
-                                        
+
                                 <div className={`bg-gray-200 rounded overflow-hidden aspect-[9/7]`}>
                                     {
                                         previewUrl && (
@@ -66,7 +66,7 @@ export default function Edit({product}) {
                                                 className="object-cover object-center w-full h-full" />
                                         )
                                     }
-                                    
+
                                     {
                                         !previewUrl && (
                                             <div className="flex flex-col items-center justify-center w-full h-full">
@@ -79,13 +79,13 @@ export default function Edit({product}) {
                                 </div>
                             </label>
                             { errors.image && <div className="mt-1 text-sm text-red-500">{errors.image}</div> }
-                            
+
                             <label htmlFor="name" className="block mt-8">
                                 <div className="text-sm font-semibold">Product Name <span className="text-red-400">*</span></div>
-                                <input 
+                                <input
                                     required
-                                    id="name" 
-                                    type="text" 
+                                    id="name"
+                                    type="text"
                                     value={data.name ?? ''}
                                     onChange={e => setData('name', e.target.value)}
                                     className="block w-full border rounded"  />
@@ -94,16 +94,16 @@ export default function Edit({product}) {
 
                             <label htmlFor="price" className="block mt-8">
                                 <div className="text-sm font-semibold">Product Price (US$) <span className="text-red-400">*</span></div>
-                                <input 
-                                    id="price" 
+                                <input
+                                    id="price"
                                     required
-                                    type="text" 
+                                    type="text"
                                     value={data.price ?? ''}
                                     onChange={e => setData('price', e.target.value)}
                                     className="block w-full border rounded"  />
                             </label>
                             { errors.price && <div className="mt-1 text-sm text-red-500">{errors.price}</div> }
-                            
+
                             <div className="mt-8">
                             <button className="block w-full px-4 py-4 font-semibold text-center text-white rounded bg-sky-500">
                                 Update Product
