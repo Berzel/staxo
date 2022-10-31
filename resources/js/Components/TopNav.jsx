@@ -19,7 +19,7 @@ export default function TopNav() {
 
     return (
         <nav className="flex items-center justify-between py-4 text-sm">
-            <Link href={route('welcome')} className="flex items-center space-x-2">
+            <Link href={route('home')} className="flex items-center space-x-2">
                 <div className="w-10 h-10 rounded-full bg-sky-500">
 
                 </div>
@@ -28,7 +28,7 @@ export default function TopNav() {
                 </h1>
             </Link>
 
-            
+
             {
                 user ? (
                     <div className="flex items-center pr-2 space-x-4">

@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -144,5 +146,18 @@ class ProductController extends Controller
 
             return back();
         });
+    }
+
+    public function checkout(Request $request, Product $product)
+    {
+        $user = User::firstOrCreate([
+            'email' => $request->email
+        ], [
+            'email' => $request->email,
+            'name' => $request->email,
+            'password' => Str::random(32)
+        ]);
+
+        return $user->checkoutCharge($product->price, $product->name, 1);
     }
 }

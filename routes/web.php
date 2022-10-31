@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/products/{product:slug}/checkout', [ProductController::class, 'checkout'])->name('products.checkout');
 
 Route::delete('products/{product:slug}', [ProductController::class, 'delete'])->name('products.destroy');
 Route::get('products/{product:slug}/edit', [ProductController::class, 'edit'])->name('products.edit');
@@ -25,6 +26,6 @@ Route::get('products/create', [ProductController::class, 'create'])->name('produ
 Route::get('products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 
 Route::get('/dashboard', DashboardController::class)->name('dashboard');
-Route::get('/', WelcomeController::class)->name('welcome');
+Route::get('/', WelcomeController::class)->name('home');
 
 require __DIR__.'/auth.php';

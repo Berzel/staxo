@@ -42,16 +42,20 @@ export default function Product({product}) {
                         </div>
                         <div className="mt-8 text-sm">
                         <p className="">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nulla minima aspernatur numquam ducimus iste nesciunt beatae ea recusandae ut! Quam omnis possimus aliquid at veniam sequi, exercitationem necessitatibus a dolorem.
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nulla minima asperna
+                            tur numquam ducimus iste nesciunt beatae ea recusandae ut! Quam omnis possimus a
+                            liquid at veniam sequi, exercitationem necessitatibus a dolorem.
                         </p>
                         <p className="mt-4">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nulla minima aspernatur numquam ducimus iste nesciunt beatae ea recusandae ut! Quam omnis possimus aliquid at veniam sequi, exercitationem necessitatibus a dolorem.
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nulla mi
+                            nima aspernatur numquam ducimus iste nesciunt beatae ea recusandae ut! Quam omnis
+                             possimus aliquid at veniam sequi, exercitationem necessitatibus a dolorem.
                         </p>
                         </div>
                         <div className="mt-8">
-                            <Link href="#" className="block py-4 font-semibold text-center text-white rounded bg-sky-500">
+                            <a href={route('products.checkout', {product: product.slug, email: 'berzel.best@gmail.com'})} className="block py-4 font-semibold text-center text-white rounded bg-sky-500">
                                 Buy now - {moneyFormat(product.price)}
-                            </Link>
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ import moneyFormat from '@/Utils/moneyFormat';
 import Footer from '@/Components/Footer';
 
 export default function Welcome({products}) {
-    
+
     return (
         <>
             <Head title='Welcome'>
@@ -18,7 +18,7 @@ export default function Welcome({products}) {
             </div>
 
             <div className="container">
-                <div className="h-[15rem] md:h-[25rem] bg-gray-200 rounded">
+                <div className="h-[15rem] md:h-[25rem] bg-gray-300 rounded">
 
                 </div>
             </div>
@@ -33,7 +33,7 @@ export default function Welcome({products}) {
                                         className="block mx-2 md:mx-4"
                                         href={route('products.show', {product: product.slug})} >
                                             <div className="overflow-hidden bg-gray-200 rounded-lg aspect-[9/7]">
-                                                <img 
+                                                <img
                                                     loading="lazy"
                                                     className="object-cover object-center w-full h-full"
                                                     src={productImage(product, 'sm')}
