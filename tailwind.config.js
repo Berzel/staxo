@@ -16,10 +16,10 @@ module.exports = {
         //     'lg': '992px',
         //     'xl': '1100px',
         // },
-        // container: {
-        //     // center: true,
-        //     // padding: '0.75rem',
-        // },
+        container: {
+            center: true,
+            padding: '0.75rem',
+        },
         extend: {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],

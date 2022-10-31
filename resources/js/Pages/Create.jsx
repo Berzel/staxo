@@ -1,10 +1,11 @@
+import Footer from "@/Components/Footer";
 import ImageUploadIcon from "@/Components/ImageUploadIcon";
 import TopNav from "@/Components/TopNav";
 import { Head, useForm } from "@inertiajs/inertia-react";
 import { useState } from "react";
 
 export default function Create() {
-    const { data, setData, post } = useForm({});
+    const { data, setData, post, errors } = useForm({});
     const [ previewUrl, setPreviewUrl ] = useState();
 
     function onImageChange(event) {
@@ -24,19 +25,19 @@ export default function Create() {
                 <meta name="description" content="Create product" />
             </Head>
 
-            <div className='container px-4 mx-auto'>
+            <div className='container'>
                 <TopNav />
             </div>
 
             <div className="py-4 text-white bg-sky-500">
-                <div className='container px-4 mx-auto text-sm font-semibold'>
+                <div className='container text-sm font-semibold'>
                     Home / Create Product
                 </div>
             </div>
 
-            <div className='container px-4 mx-auto mt-6'>
-                <div className="flex space-x-8">
-                    <div className="flex-shrink-0">
+            <div className='container mt-6'>
+                <div className="flex md:space-x-8">
+                    <div className="flex-shrink-0 hidden md:block">
                         <div className="shadow rounded p-2 min-w-[15rem]">
                             Left Navigation Menu
                         </div>
@@ -52,7 +53,7 @@ export default function Create() {
                                     onChange={onImageChange}
                                     accept=".jpeg,.png,.jpg,.webp" />
                                         
-                                <div className={`bg-gray-200 rounded overflow-hidden ${previewUrl ? 'aspect-auto':'aspect-[9/7]'}`}>
+                                <div className={`bg-gray-200 rounded overflow-hidden aspect-[9/7]`}>
                                     {
                                         previewUrl && (
                                             <img
@@ -73,6 +74,7 @@ export default function Create() {
                                     }
                                 </div>
                             </label>
+                            { errors.image && <div className="mt-1 text-sm text-red-500">{errors.image}</div> }
                             
                             <label htmlFor="name" className="block mt-8">
                                 <div className="text-sm font-semibold">Product Name <span className="text-red-400">*</span></div>
@@ -84,6 +86,7 @@ export default function Create() {
                                     onChange={e => setData('name', e.target.value)}
                                     className="block w-full border rounded"  />
                             </label>
+                            { errors.name && <div className="mt-1 text-sm text-red-500">{errors.name}</div> }
 
                             <label htmlFor="price" className="block mt-8">
                                 <div className="text-sm font-semibold">Product Price (US$) <span className="text-red-400">*</span></div>
@@ -95,6 +98,7 @@ export default function Create() {
                                     onChange={e => setData('price', e.target.value)}
                                     className="block w-full border rounded"  />
                             </label>
+                            { errors.price && <div className="mt-1 text-sm text-red-500">{errors.price}</div> }
                             
                             <div className="mt-8">
                             <button className="block w-full px-4 py-4 font-semibold text-center text-white rounded-lg bg-sky-500">
@@ -103,13 +107,15 @@ export default function Create() {
                             </div>
                         </form>
                     </div>
-                    <div className="flex-shrink-0">
+                    <div className="flex-shrink-0 hidden md:block">
                         <div className="min-w-[20rem]">
 
                         </div>
                     </div>
                 </div>
             </div>
+
+            <Footer />
         </>
     )
 }

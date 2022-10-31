@@ -29,7 +29,11 @@ class SizeFactory extends Factory
      */
     public function small()
     {
-        $path = fake()->imageUrl(300, 300);
+        $path = fake()->imageUrl(
+            gray: true,
+            width: 300, 
+            height: 300, 
+        );
 
         return $this->state(fn (array $attributes) => [
             'size' => 'sm',
@@ -45,7 +49,11 @@ class SizeFactory extends Factory
      */
     public function large()
     {
-        $path = fake()->imageUrl(600, 600);
+        $path = fake()->imageUrl(
+            gray: true,
+            width: 600, 
+            height: 600, 
+        );
 
         return $this->state(fn (array $attributes) => [
             'size' => 'lg',

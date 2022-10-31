@@ -31,9 +31,12 @@ export default function TopNav() {
             
             {
                 user ? (
-                    <div className="pr-2">
+                    <div className="flex items-center pr-2 space-x-4">
+                        <Link href={route('products.create')} className="hover:text-sky-500">
+                            Add Product
+                        </Link>
                         <div className="relative">
-                            <button onClick={toggleOpen} className="flex items-center py-2">
+                            <button onClick={toggleOpen} className="flex items-center py-2 hover:text-sky-500">
                                 <span>
                                     { user.name }
                                 </span>

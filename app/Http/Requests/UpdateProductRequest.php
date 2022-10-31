@@ -25,9 +25,9 @@ class UpdateProductRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'image' => ['nullable'],
-            // 'name' => ['required'],
-            // 'price' => ['required']
+            'name' => ['required', 'string'],
+            'price' => ['required', 'numeric'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,wepbp,png', 'max:20400'],
         ];
     }
 }
