@@ -1,12 +1,13 @@
 import TopNav from "@/Components/TopNav";
 import { Head, usePage } from "@inertiajs/inertia-react";
-import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { CardElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
+import { Inertia } from "@inertiajs/inertia";
 
 const stripePromise = loadStripe('pk_test_51Lyv4ECqvLnmo7L5YWwASCrE7hb9WVEECuvDLpmYJ7et35TlFJe7IK3XlFkol0TO4M1a107JDkqCjvwHGHaM9H5k00baxVU9Q3');
 
-const CheckoutForm = ({payment}) => {
+const CheckoutForm = ({intent, payment}) => {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -17,29 +18,35 @@ const CheckoutForm = ({payment}) => {
           return;
         }
 
-        const result = await stripe.confirmPayment({
-          //`Elements` instance that was used to create the Payment Element
-          elements,
-          confirmParams: {
-            return_url: route('orders.status', {payment: payment.id}),
-          },
-        });
+        const { setupIntent, error } = await stripe.confirmCardSetup(
+            intent.client_secret, {
+                payment_method: {
+                    card: elements.getElement(CardElement),
+                    billing_details: { name: 'Berzel Best' }
+                }
+            }
+        );
 
-        if (result.error) {
-          // Show error to your customer (for example, payment details incomplete)
-          console.log(result.error.message);
-        } else {
-          // Your customer will be redirected to your `return_url`. For some payment
-          // methods like iDEAL, your customer will be redirected to an intermediate
-          // site first to authorize the payment, then redirected to the `return_url`.
-          console.log('Paid', result);
+        if (error) {
+            console.log(error);
+            return;
         }
+
+        if (setupIntent.status !== 'succeeded') {
+            console.log(setupIntent);
+            return;
+        }
+
+        Inertia.post(route('payment_methods.store', {payment: payment.id}), {
+            payment_method: setupIntent.payment_method,
+            payment_method_types: setupIntent.payment_method_types
+        });
     };
 
     return (
         <>
             <form onSubmit={handleSubmit}>
-                <PaymentElement />
+                <CardElement id="card-element" />
                 <div className="mt-8">
                     <button disabled={!stripe} className="block w-full py-4 px-8 font-semibold text-center text-white rounded bg-sky-500">
                         Pay
@@ -57,7 +64,7 @@ export default function Charge({payment, intent}) {
     }
 
     return (
-        <Elements stripe={stripePromise} options={options} >
+        <Elements stripe={stripePromise}>
             <Head title="Place an order">
                 <meta name="description" content="Place an order" />
             </Head>
@@ -73,7 +80,7 @@ export default function Charge({payment, intent}) {
             </div>
 
             <div className="container mt-8">
-                <CheckoutForm payment={payment} />
+                <CheckoutForm intent={intent} payment={payment} />
             </div>
         </Elements>
     )

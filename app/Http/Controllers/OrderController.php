@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateOrderRequest;
+use App\Jobs\ChargeHalf;
+use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
@@ -54,15 +56,27 @@ class OrderController extends Controller
 
             return Inertia::render('Orders/Charge', [
                 'payment' => $payment,
-                'intent' => $user->pay($payment->amount)
+                'intent' => $user->createSetupIntent()
             ]);
         });
     }
 
-    public function status(Request $request, Payment $payment)
+    public function savePaymentMethod(Request $request, Payment $payment)
     {
-        $payment_intent = $request->payment_intent;
-        $status = $request->redirect_status = 'succeeded';
-        $payment_intent_client_secret = $request->payment_intent_client_secret;
+        $user = $payment->order->user;
+        $user->createOrGetStripeCustomer();
+        $user->addPaymentMethod($request->payment_method);
+
+        ChargeHalf::dispatch($payment->order);
+        ChargeHalf::dispatch($payment->order)->delay(now()->addMinutes(5));
+
+        return redirect()->route('orders.status', ['order' => $payment->order->id]);
+    }
+
+    public function status(Order $order)
+    {
+        return Inertia::render('Orders/Status', [
+            'order' => $order
+        ]);
     }
 }
