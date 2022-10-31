@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateOrderRequest;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -48,13 +49,20 @@ class OrderController extends Controller
             ]);
 
             $payment = $order->payments()->create([
-                'amount' => $order->price / 2
+                'amount' => $product->price
             ]);
 
             return Inertia::render('Orders/Charge', [
                 'payment' => $payment,
-                'intent' => $user->createSetupIntent()
+                'intent' => $user->pay($payment->amount)
             ]);
         });
+    }
+
+    public function status(Request $request, Payment $payment)
+    {
+        $payment_intent = $request->payment_intent;
+        $status = $request->redirect_status = 'succeeded';
+        $payment_intent_client_secret = $request->payment_intent_client_secret;
     }
 }

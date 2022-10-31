@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/payments/{payment}', [OrderController::class, 'status'])->name('orders.status');
 Route::get('/products/{product:slug}/orders/create', [OrderController::class, 'create'])->name('orders.create');
 Route::post('/products/{product:slug}/orders', [OrderController::class, 'checkout'])->name('orders.checkout');
 
