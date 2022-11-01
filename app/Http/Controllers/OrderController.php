@@ -55,7 +55,7 @@ class OrderController extends Controller
             ]);
 
             return Inertia::render('Orders/Charge', [
-                'payment' => $payment,
+                'payment' => Payment::with(['order'])->find($payment->id),
                 'intent' => $user->createSetupIntent()
             ]);
         });
@@ -73,6 +73,12 @@ class OrderController extends Controller
         return redirect()->route('orders.status', ['order' => $payment->order->id]);
     }
 
+    /**
+     * Show the status of the payment
+     *
+     * @param \App\Models\Order $order
+     * @return \Inertia\Response
+     */
     public function status(Order $order)
     {
         return Inertia::render('Orders/Status', [

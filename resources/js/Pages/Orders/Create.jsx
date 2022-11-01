@@ -1,5 +1,4 @@
-import Footer from "@/Components/Footer";
-import TopNav from "@/Components/TopNav";
+import AppLayout from "@/Layouts/AppLayout";
 import { Head, useForm, usePage } from "@inertiajs/inertia-react";
 
 export default function Create({product, csrf_token}) {
@@ -10,54 +9,62 @@ export default function Create({product, csrf_token}) {
     });
 
     return (
-        <>
+        <AppLayout>
             <Head title="Place an order">
                 <meta name="description" content="Place an order" />
             </Head>
 
-            <div className="container">
-                <TopNav />
-            </div>
-
             <div className="py-4 text-white bg-sky-500">
                 <div className='container text-sm font-semibold'>
-                    Home / Product / Place Order
+                    Home / Product / New Order
                 </div>
             </div>
 
             <div className="container mt-8">
-
-                <form method="post" action={route('orders.checkout', {product: product.slug})}>
-                    <input
-                        type="hidden"
-                        name="_token"
-                        value={csrf_token} />
-
-                    <div>
-                        <label htmlFor="email" className="block mt-8">
-                            <div className="text-sm font-semibold">Email Adress <span className="text-red-400">*</span></div>
+                <div className="flex space-x-24">
+                    <div className="flex-grow w-[50%]">
+                        <form method="post" action={route('orders.checkout', {product: product.slug})}>
                             <input
-                                required
-                                id="email"
-                                name="email"
-                                type="email"
-                                value={data.email ?? ''}
-                                onChange={e => setData('email', e.target.value)}
-                                className="block w-full border rounded"  />
-                        </label>
-                        { errors.email && <div className="mt-1 text-sm text-red-500">{errors.email}</div> }
-                    </div>
+                                type="hidden"
+                                name="_token"
+                                value={csrf_token} />
 
-                    <div className="mt-8">
-                        <button className="block w-full px-4 py-4 font-semibold text-center text-white rounded-lg bg-sky-500">
-                            Place Order
-                        </button>
-                    </div>
-                </form>
+                            <div className="pb-4 mb-8 border-b">
+                                <h1 className="text-xl font-semibold">
+                                    Email Address
+                                </h1>
+                                <p className="text-gray-500">
+                                    We need your email address to continue
+                                </p>
+                            </div>
 
+                            <div>
+                                <label htmlFor="email" className="block">
+                                    <div className="text-sm font-semibold">Email Adress <span className="text-red-400">*</span></div>
+                                    <input
+                                        required
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        value={data.email ?? ''}
+                                        onChange={e => setData('email', e.target.value)}
+                                        className="block w-full border rounded"  />
+                                </label>
+                                { errors.email && <div className="mt-1 text-sm text-red-500">{errors.email}</div> }
+                            </div>
+
+                            <div className="mt-8">
+                                <button className="block w-full px-4 py-4 font-semibold text-center text-white rounded-lg bg-sky-500">
+                                    Continue as guest
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div className="flex-grow w-[50%]">
+                        Provide the user with the option to log in if they already have an account
+                    </div>
+                </div>
             </div>
-
-            <Footer />
-        </>
+        </AppLayout>
     )
 }

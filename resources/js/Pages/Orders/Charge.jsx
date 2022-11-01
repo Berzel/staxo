@@ -1,9 +1,9 @@
-import TopNav from "@/Components/TopNav";
-import { Head, usePage } from "@inertiajs/inertia-react";
-import { CardElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { Head } from "@inertiajs/inertia-react";
+import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import { Inertia } from "@inertiajs/inertia";
+import AppLayout from "@/Layouts/AppLayout";
 
 const stripePromise = loadStripe('pk_test_51Lyv4ECqvLnmo7L5YWwASCrE7hb9WVEECuvDLpmYJ7et35TlFJe7IK3XlFkol0TO4M1a107JDkqCjvwHGHaM9H5k00baxVU9Q3');
 
@@ -18,14 +18,13 @@ const CheckoutForm = ({intent, payment}) => {
           return;
         }
 
-        const { setupIntent, error } = await stripe.confirmCardSetup(
-            intent.client_secret, {
-                payment_method: {
-                    card: elements.getElement(CardElement),
-                    billing_details: { name: 'Berzel Best' }
-                }
+        const { setupIntent, error } = await stripe.confirmSetup({
+            elements,
+            redirect: 'if_required',
+            confirmParams: {
+                return_url: route('orders.status', {order: payment.order.id}),
             }
-        );
+        });
 
         if (error) {
             console.log(error);
@@ -46,10 +45,10 @@ const CheckoutForm = ({intent, payment}) => {
     return (
         <>
             <form onSubmit={handleSubmit}>
-                <CardElement id="card-element" />
+                <PaymentElement />
                 <div className="mt-8">
-                    <button disabled={!stripe} className="block w-full py-4 px-8 font-semibold text-center text-white rounded bg-sky-500">
-                        Pay
+                    <button disabled={!stripe} className="block w-full px-8 py-4 font-semibold text-center text-white rounded bg-sky-500">
+                        Save Payment Method
                     </button>
                 </div>
             </form>
@@ -61,27 +60,40 @@ export default function Charge({payment, intent}) {
 
     const options = {
         clientSecret: intent.client_secret
-    }
+    };
 
     return (
-        <Elements stripe={stripePromise}>
-            <Head title="Place an order">
-                <meta name="description" content="Place an order" />
-            </Head>
+        <Elements stripe={stripePromise} options={options}>
+            <AppLayout>
+                <Head title="Place an order">
+                    <meta name="description" content="Place an order" />
+                </Head>
 
-            <div className="container">
-                <TopNav />
-            </div>
-
-            <div className="py-4 text-white bg-sky-500">
-                <div className='container text-sm font-semibold'>
-                    Home / Product / Charge
+                <div className="py-4 text-white bg-sky-500">
+                    <div className='container text-sm font-semibold'>
+                        Home / Product / Charge
+                    </div>
                 </div>
-            </div>
 
-            <div className="container mt-8">
-                <CheckoutForm intent={intent} payment={payment} />
-            </div>
+                <div className="container mt-8">
+                    <div className="flex space-x-24">
+                        <div className="flex-grow w-[50%]">
+                            <div className="pb-4 mb-8 border-b">
+                                <h1 className="text-xl font-semibold">
+                                    Payment Method
+                                </h1>
+                                <p className="text-gray-500">
+                                    Add your payment method
+                                </p>
+                            </div>
+                            <CheckoutForm intent={intent} payment={payment} />
+                        </div>
+                        <div className="flex-grow w-[50%]">
+
+                        </div>
+                    </div>
+                </div>
+            </AppLayout>
         </Elements>
     )
 }
