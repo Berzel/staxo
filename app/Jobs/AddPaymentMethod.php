@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Http\Requests\CreatePaymentMethod;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -21,8 +20,8 @@ class AddPaymentMethod implements ShouldQueue
      * @return void
      */
     public function __construct(
-        private Order $order,
-        private CreatePaymentMethod $request
+        private array $request,
+        private Order $order
     ) {
         //
     }
@@ -36,7 +35,7 @@ class AddPaymentMethod implements ShouldQueue
     {
         $user = $this->order->user;
         $user->createOrGetStripeCustomer();
-        $user->addPaymentMethod($this->request->payment_method);
+        $user->addPaymentMethod($this->request['payment_method']);
 
         $firstHalf = $this->order->product->price / 2;
         $secondHalf = $this->order->product->price / 2;

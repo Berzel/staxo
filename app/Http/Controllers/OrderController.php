@@ -59,7 +59,7 @@ class OrderController extends Controller
 
     public function savePaymentMethod(CreatePaymentMethod $request, Order $order)
     {
-        AddPaymentMethod::dispatch($order, $request);
+        AddPaymentMethod::dispatch($request->validated(), $order);
         return redirect()->route('orders.status', ['order' => $order->id]);
     }
 

@@ -1,12 +1,17 @@
 import AppLayout from "@/Layouts/AppLayout";
 import { Head, useForm, usePage } from "@inertiajs/inertia-react";
 
-export default function Create({product, csrf_token}) {
+export default function Create({product}) {
     const { user } = usePage().props.auth;
 
-    const { data, post, setData, errors } = useForm({
+    const { data, post, setData, errors, processing } = useForm({
         email: user?.email ?? ''
     });
+
+    function createOrder(event) {
+        event.preventDefault();
+        post(route('orders.checkout', {product: product.slug}));
+    }
 
     return (
         <AppLayout>
@@ -23,12 +28,7 @@ export default function Create({product, csrf_token}) {
             <div className="container mt-8">
                 <div className="flex space-x-24">
                     <div className="flex-grow w-[50%]">
-                        <form method="post" action={route('orders.checkout', {product: product.slug})}>
-                            <input
-                                type="hidden"
-                                name="_token"
-                                value={csrf_token} />
-
+                        <form onSubmit={createOrder}>
                             <div className="pb-4 mb-8 border-b">
                                 <h1 className="text-xl font-semibold">
                                     Email Address
@@ -54,8 +54,8 @@ export default function Create({product, csrf_token}) {
                             </div>
 
                             <div className="mt-8">
-                                <button className="block w-full px-4 py-4 font-semibold text-center text-white rounded-lg bg-sky-500">
-                                    Continue as guest
+                                <button disabled={processing} className="block w-full px-4 py-4 font-semibold text-center text-white rounded-lg bg-sky-500">
+                                    {processing?'Submitting...':'Continue as guest'}
                                 </button>
                             </div>
                         </form>
