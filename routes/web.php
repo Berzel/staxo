@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('payments/{payment}/payment_methods', [OrderController::class, 'savePaymentMethod'])->name('payment_methods.store');
+Route::post('orders/{order}/payment_methods', [OrderController::class, 'savePaymentMethod'])->name('payment_methods.store');
 Route::get('/orders/{order}', [OrderController::class, 'status'])->name('orders.status');
 Route::get('/products/{product:slug}/orders/create', [OrderController::class, 'create'])->name('orders.create');
 Route::post('/products/{product:slug}/orders', [OrderController::class, 'checkout'])->name('orders.checkout');

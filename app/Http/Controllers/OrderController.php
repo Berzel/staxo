@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateOrderRequest;
-use App\Jobs\ChargeHalf;
+use App\Http\Requests\CreatePaymentMethod;
+use App\Jobs\AddPaymentMethod;
 use App\Models\Order;
-use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -50,27 +50,17 @@ class OrderController extends Controller
                 'product_id' => $product->id
             ]);
 
-            $payment = $order->payments()->create([
-                'amount' => $product->price
-            ]);
-
             return Inertia::render('Orders/Charge', [
-                'payment' => Payment::with(['order'])->find($payment->id),
+                'order' => $order,
                 'intent' => $user->createSetupIntent()
             ]);
         });
     }
 
-    public function savePaymentMethod(Request $request, Payment $payment)
+    public function savePaymentMethod(CreatePaymentMethod $request, Order $order)
     {
-        $user = $payment->order->user;
-        $user->createOrGetStripeCustomer();
-        $user->addPaymentMethod($request->payment_method);
-
-        ChargeHalf::dispatch($payment->order);
-        ChargeHalf::dispatch($payment->order)->delay(now()->addMinutes(5));
-
-        return redirect()->route('orders.status', ['order' => $payment->order->id]);
+        AddPaymentMethod::dispatch($order, $request);
+        return redirect()->route('orders.status', ['order' => $order->id]);
     }
 
     /**

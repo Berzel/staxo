@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\PaymentCompleted;
-use App\Models\Order;
+use App\Models\Payment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class ChargeHalf implements ShouldQueue
+class ChargePayment implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -22,7 +22,7 @@ class ChargeHalf implements ShouldQueue
      * @return void
      */
     public function __construct(
-        private Order $order
+        private Payment $payment
     ) {
         //
     }
@@ -34,10 +34,10 @@ class ChargeHalf implements ShouldQueue
      */
     public function handle()
     {
-        $user = $this->order->user;
+        $user = $this->payment->order->user;
 
         $user->charge(
-            intval(ceil($this->order->payments->first()->amount / 2)),
+            $this->payment->amount,
             $user->paymentMethods()->first()->toArray()['id']
         );
 

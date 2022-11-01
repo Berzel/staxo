@@ -7,7 +7,7 @@ import AppLayout from "@/Layouts/AppLayout";
 
 const stripePromise = loadStripe('pk_test_51Lyv4ECqvLnmo7L5YWwASCrE7hb9WVEECuvDLpmYJ7et35TlFJe7IK3XlFkol0TO4M1a107JDkqCjvwHGHaM9H5k00baxVU9Q3');
 
-const CheckoutForm = ({intent, payment}) => {
+const CheckoutForm = ({ order }) => {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -22,7 +22,7 @@ const CheckoutForm = ({intent, payment}) => {
             elements,
             redirect: 'if_required',
             confirmParams: {
-                return_url: route('orders.status', {order: payment.order.id}),
+                return_url: route('orders.status', {order: order.id}),
             }
         });
 
@@ -36,7 +36,7 @@ const CheckoutForm = ({intent, payment}) => {
             return;
         }
 
-        Inertia.post(route('payment_methods.store', {payment: payment.id}), {
+        Inertia.post(route('payment_methods.store', {order: order.id}), {
             payment_method: setupIntent.payment_method,
             payment_method_types: setupIntent.payment_method_types
         });
@@ -56,7 +56,7 @@ const CheckoutForm = ({intent, payment}) => {
     )
 }
 
-export default function Charge({payment, intent}) {
+export default function Charge({order, intent}) {
 
     const options = {
         clientSecret: intent.client_secret
@@ -71,7 +71,7 @@ export default function Charge({payment, intent}) {
 
                 <div className="py-4 text-white bg-sky-500">
                     <div className='container text-sm font-semibold'>
-                        Home / Product / Charge
+                        Home / Order / Payment Method
                     </div>
                 </div>
 
@@ -86,7 +86,7 @@ export default function Charge({payment, intent}) {
                                     Add your payment method
                                 </p>
                             </div>
-                            <CheckoutForm intent={intent} payment={payment} />
+                            <CheckoutForm intent={intent} order={order} />
                         </div>
                         <div className="flex-grow w-[50%]">
 
