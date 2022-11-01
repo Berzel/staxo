@@ -41,6 +41,6 @@ class ChargePayment implements ShouldQueue
             $user->paymentMethods()->first()->toArray()['id']
         );
 
-        Mail::to($user)->send(new PaymentCompleted($this->order));
+        Mail::to($user)->send(new PaymentCompleted($this->payment));
     }
 }

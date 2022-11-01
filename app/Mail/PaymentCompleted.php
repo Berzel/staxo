@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Order;
+use App\Models\Payment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -19,7 +19,7 @@ class PaymentCompleted extends Mailable
      *
      * @return void
      */
-    public function __construct(public Order $order)
+    public function __construct(public Payment $payment)
     {
         //
     }

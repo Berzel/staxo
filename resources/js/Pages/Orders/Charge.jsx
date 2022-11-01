@@ -27,7 +27,7 @@ const CheckoutForm = ({ order }) => {
         });
 
         if (error) {
-            console.log(error);
+            alert(error.message);
             return;
         }
 
@@ -46,11 +46,15 @@ const CheckoutForm = ({ order }) => {
         <>
             <form onSubmit={handleSubmit}>
                 <PaymentElement />
-                <div className="mt-8">
-                    <button disabled={!stripe} className="block w-full px-8 py-4 font-semibold text-center text-white rounded bg-sky-500">
-                        Save Payment Method
-                    </button>
-                </div>
+                {
+                    (stripe || elements) && (
+                        <div className="mt-8">
+                            <button disabled={!stripe} className="block w-full px-8 py-4 font-semibold text-center text-white rounded bg-sky-500">
+                                Save Payment Method
+                            </button>
+                        </div>
+                    )
+                }
             </form>
         </>
     )
