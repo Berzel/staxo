@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function Edit({product}) {
 
     const [ previewUrl, setPreviewUrl ] = useState(productImage(product, 'default'));
-    const { data, setData, post }  = useForm({
+    const { data, setData, post, errors }  = useForm({
         name: product.name,
         price: product.price
     })

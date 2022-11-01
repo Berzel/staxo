@@ -1,5 +1,6 @@
 import Footer from "@/Components/Footer";
 import TopNav from "@/Components/TopNav";
+import AppLayout from "@/Layouts/AppLayout";
 import moneyFormat from "@/Utils/moneyFormat";
 import productImage from "@/Utils/productImage";
 import { Portal } from "@headlessui/react";
@@ -61,14 +62,10 @@ function DeleteForm({product}) {
 
 export default function Products({products}) {
     return (
-        <>
+        <AppLayout>
             <Head title="Products">
                 <meta name="description" content="Products page" />
             </Head>
-
-            <div className='container'>
-                <TopNav />
-            </div>
 
             <div className="py-4 text-white bg-sky-500">
                 <div className='container text-sm font-semibold'>
@@ -88,7 +85,7 @@ export default function Products({products}) {
                             <h1 className="text-lg font-semibold">
                                 My Products
                             </h1>
-                            
+
                             <Link href={route('products.create')} className="px-4 py-2 font-semibold text-white rounded bg-sky-500">
                                 Add Product
                             </Link>
@@ -148,7 +145,7 @@ export default function Products({products}) {
                                                                 <Link href={route('products.edit', {product: product.slug})} className="font-medium text-blue-600 hover:underline">
                                                                     Edit
                                                                 </Link>
-                                                                
+
                                                                 <DeleteForm product={product} />
                                                             </div>
                                                         </td>
@@ -172,9 +169,7 @@ export default function Products({products}) {
                     </div>
                 </div>
             </div>
-
-            <Footer />
-        </>
+        </AppLayout>
     )
 }
 
