@@ -33,7 +33,7 @@ export default function Edit({product}) {
                 <TopNav />
             </div>
 
-            <div className="py-4 text-white bg-sky-500">
+            <div className="py-4 text-white bg-indigo-500">
                 <div className='container text-sm font-semibold'>
                     Home / Edit Product
                 </div>
@@ -70,8 +70,8 @@ export default function Edit({product}) {
                                     {
                                         !previewUrl && (
                                             <div className="flex flex-col items-center justify-center w-full h-full">
-                                                <ImageUploadIcon className="w-16 h-16 fill-current md:h-24 md:w-24 text-sky-500" />
-                                                <h2 className="mt-8 text-lg font-semibold">Click to <span className="text-sky-500">browse</span> image.</h2>
+                                                <ImageUploadIcon className="w-16 h-16 text-indigo-500 fill-current md:h-24 md:w-24" />
+                                                <h2 className="mt-8 text-lg font-semibold">Click to <span className="text-indigo-500">browse</span> image.</h2>
                                                 <p className="mt-2 font-light text-gray-500 ">.jpg, .jpeg, .png, .webp files, max 20MB.</p>
                                             </div>
                                         )
@@ -105,7 +105,7 @@ export default function Edit({product}) {
                             { errors.price && <div className="mt-1 text-sm text-red-500">{errors.price}</div> }
 
                             <div className="mt-8">
-                            <button className="block w-full px-4 py-4 font-semibold text-center text-white rounded bg-sky-500">
+                            <button className="block w-full px-4 py-4 font-semibold text-center text-white bg-indigo-500 rounded">
                                 Update Product
                             </button>
                             </div>

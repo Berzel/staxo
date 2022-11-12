@@ -51,10 +51,10 @@ class User extends Authenticatable
     /**
      * Set the users password attribute
      */
-    public function password() : Attribute
+    public function password(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => bcrypt($value)
+            set: fn ($value) => bcrypt($value)
         );
     }
 

@@ -4,8 +4,11 @@ import TopNav from '@/Components/TopNav';
 import productImage from '@/Utils/productImage';
 import moneyFormat from '@/Utils/moneyFormat';
 import Footer from '@/Components/Footer';
+import ProductList from '@/Components/ProductList';
 
 export default function Welcome({products}) {
+
+    const featured = products.data[0];
 
     return (
         <>
@@ -17,43 +20,40 @@ export default function Welcome({products}) {
                 <TopNav />
             </div>
 
-            <div className="container">
-                <div className="h-[15rem] md:h-[25rem] bg-gray-300 rounded">
+            {
+                featured && (
+                    <div className="container flex space-x-32">
+                        <div className="flex-shrink-0 py-24 rounded">
+                            <h1 className='text-2xl md:text-5xl font-bold max-w-[30rem]'>
+                                {featured.name}
+                            </h1>
+                            <p className='mt-4 md:text-xl max-w-[20em] text-gray-500'>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium, dolores. Totam alias voluptates molestiae modi?
+                            </p>
+                            <div className='flex mt-12 space-x-4'>
+                                <Link href={route('orders.create', {product: featured.slug})} className='px-6 py-3 font-semibold text-white bg-indigo-500 rounded'>
+                                    Buy Now
+                                </Link>
+                                <Link href={route('products.show', {product: featured.slug})} className='px-6 py-3 font-semibold text-indigo-600 bg-indigo-200 rounded'>
+                                    View Details
+                                </Link>
+                            </div>
+                        </div>
+                        <div className='flex-grow my-12 overflow-hidden bg-gray-300 rounded-lg max-h-[26rem] hidden md:block'>
+                            <img className='object-cover object-center w-full h-full' src={productImage(featured, 'lg')} />
+                        </div>
+                    </div>
+                )
+            }
 
-                </div>
-            </div>
 
-            <div className="container mt-8">
-                {
-                    products.data.length > 0 && (
-                        <ul className="flex flex-wrap justify-between -mx-2 -mt-4 md:-mx-4">
-                            {products.data.map(product => (
-                                <li key={product.id} className="w-[50%] md:w-[25%] flex-grow-0 my-4">
-                                    <Link
-                                        className="block mx-2 md:mx-4"
-                                        href={route('products.show', {product: product.slug})} >
-                                            <div className="overflow-hidden bg-gray-200 rounded-lg aspect-[9/7]">
-                                                <img
-                                                    loading="lazy"
-                                                    className="object-cover object-center w-full h-full"
-                                                    src={productImage(product, 'sm')}
-                                                    alt={product.name} />
-                                            </div>
-                                            <div className='mt-2'>
-                                                <h2>
-                                                    {product.name}
-                                                </h2>
-                                                <h2 className="font-semibold text-sky-500">
-                                                    {moneyFormat(product.price)}
-                                                </h2>
-                                            </div>
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    )
-                }
-            </div>
+            {
+                products.data.length > 0 && (
+                    <div className="container mt-8">
+                        <ProductList products={products.data} />
+                    </div>
+                )
+            }
 
             <Footer />
         </>

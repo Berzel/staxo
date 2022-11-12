@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -26,7 +25,7 @@ class ProductController extends Controller
     /**
      * Show a list of the logged in users products
      *
-     * @param Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Inertia\Response
      */
     public function index(Request $request)
@@ -54,12 +53,12 @@ class ProductController extends Controller
     /**
      * Save a new product to database
      *
-     * @param CreateProductRequest $request
+     * @param  CreateProductRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateProductRequest $request)
     {
-        return DB::transaction(function () use ($request){
+        return DB::transaction(function () use ($request) {
             $this->authorize('create', Product::class);
 
             $product = $request->user()->products()
@@ -76,56 +75,52 @@ class ProductController extends Controller
     /**
      * Show a single product
      *
-     * @param Product $product
+     * @param  \App\Models\Product  $product
      * @return \Inertia\Response
      */
     public function show(Product $product)
     {
-        // Can use a product resource instead
-        $product = Product::with([
-            'user',
-            'images' => [
-                'sizes',
-            ],
-        ])->find($product->id);
+        $relations = ['user', 'images.sizes'];
 
         return Inertia::render('Product', [
-            'product' => $product,
+            'product' => $product->load($relations),
+            'others' => Product::with($relations)->take(8)->inRandomOrder()->get()
         ]);
     }
 
     /**
      * Show the form to edit a product
      *
-     * @param Product $product
+     * @param  Product  $product
      * @return \Inertia\Response
      */
     public function edit(Product $product)
     {
-        $product = Product::with(['user', 'images.sizes'])->find($product->id);
-
         return Inertia::render('Edit', [
-            'product' => $product
+            'product' => $product->load(['user', 'images.sizes']),
         ]);
     }
 
     /**
      * Update the product in storage
      *
-     * @param UpdateProductRequest $request
-     * @param Product $product
+     * @param  \App\Http\Requests\UpdateProductRequest  $request
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        return DB::transaction(function () use ($request, $product){
+        return DB::transaction(function () use ($request, $product) {
             $product->update($request->validated());
 
             if ($request->hasFile('image')) {
                 $product->updateImage($request->file('image'));
             }
 
-            session()->flash('success', 'Product updated successfully!');
+            Session::flash('message', [
+                'type' => 'success',
+                'text' => 'Product updated successfully!'
+            ]);
 
             return redirect()->route('products.show', ['product' => $product->slug]);
         });
@@ -134,7 +129,7 @@ class ProductController extends Controller
     /**
      * Delete a product from storage
      *
-     * @param Product $product
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\RedirectResponse
      */
     public function delete(Product $product)

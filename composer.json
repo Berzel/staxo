@@ -11,6 +11,7 @@
         "intervention/image": "^2.7",
         "laravel/cashier": "^14.2",
         "laravel/framework": "^9.19",
+        "laravel/horizon": "^5.10",
         "laravel/sanctum": "^2.8",
         "laravel/tinker": "^2.7",
         "spatie/image": "^2.2",

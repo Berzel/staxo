@@ -67,7 +67,7 @@ export default function Products({products}) {
                 <meta name="description" content="Products page" />
             </Head>
 
-            <div className="py-4 text-white bg-sky-500">
+            <div className="py-4 text-white bg-indigo-500">
                 <div className='container text-sm font-semibold'>
                     Home / My Products
                 </div>
@@ -86,7 +86,7 @@ export default function Products({products}) {
                                 My Products
                             </h1>
 
-                            <Link href={route('products.create')} className="px-4 py-2 font-semibold text-white rounded bg-sky-500">
+                            <Link href={route('products.create')} className="px-4 py-2 font-semibold text-white bg-indigo-500 rounded">
                                 Add Product
                             </Link>
                         </div>
@@ -159,7 +159,7 @@ export default function Products({products}) {
                                 <div className="py-12 mt-4 text-center bg-gray-200 rounded">
                                     <div className="text-xl font-semibold">Nothing here!!</div>
                                     <div className="mt-8">
-                                        <Link href={route('products.create')} className="px-4 py-2 rounded text-sky-500">
+                                        <Link href={route('products.create')} className="px-4 py-2 text-indigo-500 rounded">
                                             Add Products
                                         </Link>
                                     </div>

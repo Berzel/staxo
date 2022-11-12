@@ -31,8 +31,8 @@ class SizeFactory extends Factory
     {
         $path = fake()->imageUrl(
             gray: true,
-            width: 300, 
-            height: 300, 
+            width: 300,
+            height: 300,
         );
 
         return $this->state(fn (array $attributes) => [
@@ -51,8 +51,8 @@ class SizeFactory extends Factory
     {
         $path = fake()->imageUrl(
             gray: true,
-            width: 600, 
-            height: 600, 
+            width: 600,
+            height: 600,
         );
 
         return $this->state(fn (array $attributes) => [

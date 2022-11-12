@@ -2,10 +2,11 @@
 
 namespace App\Mail;
 
+use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -19,8 +20,9 @@ class PaymentCompleted extends Mailable
      *
      * @return void
      */
-    public function __construct(public Payment $payment)
-    {
+    public function __construct(
+        public Order $order
+    ) {
         //
     }
 
@@ -33,6 +35,7 @@ class PaymentCompleted extends Mailable
     {
         return new Envelope(
             subject: 'Payment Completed',
+            from: new Address('payments@staxo.com', 'Staxo')
         );
     }
 
@@ -44,7 +47,10 @@ class PaymentCompleted extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mail.payaments.charged',
+            view: 'mail.payments.charged',
+            with: [
+                'payment' => $this->order->payment
+            ]
         );
     }
 

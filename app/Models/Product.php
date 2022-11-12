@@ -41,12 +41,12 @@ class Product extends Model
         return $this->hasMany(Image::class);
     }
 
-    public function name() : Attribute
+    public function name(): Attribute
     {
         return Attribute::make(
             set: fn ($value) => [
                 'name' => $value,
-                'slug' => $this->slug ?? Str::slug($value) . '-' . now()->timestamp
+                'slug' => $this->slug ?? Str::slug($value).'-'.now()->timestamp,
             ]
         );
     }
@@ -92,11 +92,9 @@ class Product extends Model
         return $image;
     }
 
-
     public function deleteImage()
     {
         $this->images->each(function ($image) {
-            
             $image->sizes->each(function ($size) {
                 Storage::disk('public')->delete($size->storage_path);
                 $size->delete();
@@ -108,6 +106,6 @@ class Product extends Model
 
     protected function imageDirectory()
     {
-        return $this->created_at->format('Y/m/d') . '/' . $this->id;
+        return $this->created_at->format('Y/m/d').'/'.$this->id;
     }
 }

@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -46,11 +45,11 @@ class AddPaymentMethod implements ShouldQueue
         }
 
         ChargePayment::dispatch($this->order->payments()->create([
-            'amount' => $firstHalf
+            'amount' => $firstHalf,
         ]));
 
         ChargePayment::dispatch($this->order->payments()->create([
-            'amount' => $secondHalf
+            'amount' => $secondHalf,
         ]))->delay(now()->addMinutes(5));
     }
 }

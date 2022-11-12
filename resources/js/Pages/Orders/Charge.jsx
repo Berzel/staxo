@@ -49,7 +49,7 @@ const CheckoutForm = ({ order }) => {
                 {
                     (stripe || elements) && (
                         <div className="mt-8">
-                            <button disabled={!stripe} className="block w-full px-8 py-4 font-semibold text-center text-white rounded bg-sky-500">
+                            <button disabled={!stripe} className="block w-full px-8 py-4 font-semibold text-center text-white bg-indigo-500 rounded">
                                 Save Payment Method
                             </button>
                         </div>
@@ -73,7 +73,7 @@ export default function Charge({order, intent}) {
                     <meta name="description" content="Place an order" />
                 </Head>
 
-                <div className="py-4 text-white bg-sky-500">
+                <div className="py-4 text-white bg-indigo-500">
                     <div className='container text-sm font-semibold'>
                         Home / Order / Payment Method
                     </div>

@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Mail\PaymentCompleted;
 use App\Models\Payment;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -41,6 +40,6 @@ class ChargePayment implements ShouldQueue
             $user->paymentMethods()->first()->toArray()['id']
         );
 
-        Mail::to($user)->send(new PaymentCompleted($this->payment));
+        Mail::to($user)->send(new PaymentCompleted($this->payment->order));
     }
 }

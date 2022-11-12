@@ -20,7 +20,7 @@ export default function TopNav() {
     return (
         <nav className="flex items-center justify-between py-4 text-sm">
             <Link href={route('home')} className="flex items-center space-x-2">
-                <div className="w-10 h-10 rounded-full bg-sky-500">
+                <div className="w-10 h-10 bg-indigo-500 rounded-full">
 
                 </div>
                 <h1 className="text-lg font-semibold">
@@ -32,11 +32,11 @@ export default function TopNav() {
             {
                 user ? (
                     <div className="flex items-center pr-2 space-x-4">
-                        <Link href={route('products.create')} className="hover:text-sky-500">
+                        <Link href={route('products.create')} className="hover:text-indigo-500">
                             Add Product
                         </Link>
                         <div className="relative">
-                            <button onClick={toggleOpen} className="flex items-center py-2 hover:text-sky-500">
+                            <button onClick={toggleOpen} className="flex items-center py-2 hover:text-indigo-500">
                                 <span>
                                     { user.name }
                                 </span>

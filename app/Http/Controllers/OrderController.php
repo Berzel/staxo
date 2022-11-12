@@ -8,8 +8,8 @@ use App\Jobs\AddPaymentMethod;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -23,9 +23,13 @@ class OrderController extends Controller
      */
     public function create(Product $product)
     {
+        Session::flash('message', [
+            'type' => 'info',
+            'text' => 'You must enter your email address to continue. Alternatively you can log in to your account so you can track your order status at a later point.'
+        ]);
+
         return Inertia::render('Orders/Create', [
-            'product' => $product,
-            'csrf_token' => csrf_token()
+            'product' => $product
         ]);
     }
 
@@ -34,6 +38,7 @@ class OrderController extends Controller
      *
      * @param \App\Http\Requests\CreateOrderRequest $request
      * @param \App\Models\Product $product
+     * @return \Inertia\Response
      */
     public function checkout(CreateOrderRequest $request, Product $product)
     {
@@ -50,13 +55,22 @@ class OrderController extends Controller
                 'product_id' => $product->id
             ]);
 
+            $intent = $user->createSetupIntent();
+
             return Inertia::render('Orders/Charge', [
                 'order' => $order,
-                'intent' => $user->createSetupIntent()
+                'intent' => $intent
             ]);
         });
     }
 
+    /**
+     * Save the added payment method
+     *
+     * @param \App\Http\Requests\CreatePaymentMethod $request
+     * @param \App\Model\Order $order
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function savePaymentMethod(CreatePaymentMethod $request, Order $order)
     {
         AddPaymentMethod::dispatch($request->validated(), $order);
